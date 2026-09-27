@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}HoneyChain | Trace a jar{% endblock %}
+{% block page %}verify{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container center">
+    <h1 data-hero>Trace your honey</h1>
+    <p class="lead" data-hero>Enter the batch code printed beside the QR on your jar to open its record.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container verify-wrap">
+    <form method="get" action="{{ url('verify') }}" class="reveal">
+      <div class="search-box">
+        <i data-lucide="search" class="search-ico"></i>
+        <input type="text" name="code" placeholder="e.g. HNY-2026-0001" autocomplete="off" autofocus
+               value="{{ request.GET.code or '' }}" aria-label="Batch code">
+        <button type="submit" class="btn">Trace <i data-lucide="arrow-right"></i></button>
+      </div>
+    </form>
+
+    <p class="center muted chips-label">Try one of these seeded batches</p>
+    <div class="chips">
+      {% for b in sample_codes %}
+        <a class="chip" href="{{ url('trace', code=b) }}"><i data-lucide="qr-code"></i> {{ b }}</a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}HoneyChain | Producer dashboard{% endblock %}
+{% block page %}dashboard{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <h1 data-hero>Producer dashboard</h1>
+    <p class="lead" data-hero>Manage beekeepers, hives, and batches, and append verified events to any chain.</p>
+    <div class="hero-cta" data-hero style="margin-top:18px">
+      <a href="{{ url('new_batch') }}" class="btn btn-sm"><i data-lucide="plus"></i> New batch</a>
+      <a href="{{ url('new_hive') }}" class="btn btn-sm btn-dark"><i data-lucide="plus"></i> Register hive</a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid-cards" data-stagger>
+      <div class="mini-stat reveal"><span class="ms-ico"><i data-lucide="package"></i></span><div><div class="num">{{ totals.batches }}</div><div class="label">Total batches</div></div></div>
+      <div class="mini-stat reveal"><span class="ms-ico"><i data-lucide="scale"></i></span><div><div class="num">{{ '%.1f'|format(totals.kg) }} kg</div><div class="label">Honey under trace</div></div></div>
+      <div class="mini-stat reveal"><span class="ms-ico"><i data-lucide="boxes"></i></span><div><div class="num">{{ totals.events }}</div><div class="label">Blocks mined</div></div></div>
+    </div>
+
+    <div class="table-wrap reveal">
+      <div class="table-head"><h3>Batches</h3><a href="{{ url('new_batch') }}" class="btn btn-sm"><i data-lucide="plus"></i> New batch</a></div>
+      <table>
+        <thead><tr><th>Code</th><th>Honey</th><th>Beekeeper</th><th>Qty</th><th>Status</th><th>Blocks</th><th></th></tr></thead>
+        <tbody>
+          {% for b in batches %}
+          <tr>
+            <td><span class="mono">{{ b.code }}</span></td>
+            <td>{{ b.honey_type }}</td>
+            <td>{{ b.hive.beekeeper.name }}</td>
+            <td>{{ b.quantity_kg }} kg</td>
+            <td><span class="badge-status">{{ b.get_status_display() }}</span></td>
+            <td><span class="tag-count">{{ b.blocks_n }}</span></td>
+            <td class="row-actions">
+              <a href="{{ url('batch_detail', code=b.code) }}"><i data-lucide="boxes"></i> Chain</a>
+              <a href="{{ url('add_event', code=b.code) }}"><i data-lucide="plus"></i> Event</a>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="7" class="muted center">No batches yet. Create one to start a chain.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="split">
+      <div class="table-wrap reveal-l">
+        <div class="table-head"><h3>Beekeepers</h3></div>
+        <table>
+          <thead><tr><th>Name</th><th>Reg. no.</th><th>Location</th><th>Hives</th></tr></thead>
+          <tbody>
+            {% for k in beekeepers %}
+            <tr><td>{{ k.name }}{% if k.certified_organic %} <i data-lucide="leaf" class="ico-organic"></i>{% endif %}</td><td><span class="mono">{{ k.apiary_reg_no }}</span></td><td>{{ k.location }}</td><td><span class="tag-count">{{ k.hive_n }}</span></td></tr>
+            {% else %}<tr><td colspan="4" class="muted center">None yet.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap reveal-r">
+        <div class="table-head"><h3>Hives</h3><a href="{{ url('new_hive') }}" class="btn btn-sm"><i data-lucide="plus"></i> Add</a></div>
+        <table>
+          <thead><tr><th>Code</th><th>Floral source</th><th>Beekeeper</th></tr></thead>
+          <tbody>
+            {% for h in hives %}
+            <tr><td><span class="mono">{{ h.code }}</span></td><td>{{ h.floral_source }}</td><td>{{ h.beekeeper.name }}</td></tr>
+            {% else %}<tr><td colspan="3" class="muted center">None yet.</td></tr>{% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,22 @@
+# Python / Django
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+.env.*
+!.env.example
+
+# Collected static (regenerated; WhiteNoise serves from /static directly)
+staticfiles_build/
+
+# Vercel
+.vercel
+
+# Local scratch
+_smoke*.py
+
+# NOTE: db.sqlite3 is intentionally NOT ignored. The seeded demo database is
+# committed so it ships to Vercel's read-only filesystem (copied to /tmp at
+# boot). Delete this note and add "db.sqlite3" here once you move to Postgres.
+db.sqlite3

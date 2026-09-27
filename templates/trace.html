@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}HoneyChain | {{ batch.code }} provenance{% endblock %}
+{% block page %}trace{% endblock %}
+
+{% set icons = {
+  'genesis':'link','harvest':'flower-2','extraction':'droplet','lab_test':'flask-conical','processing':'settings-2',
+  'packaging':'package','warehouse':'warehouse','transit':'truck','retail':'store','sold':'shopping-cart'
+} %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <div class="crumbs" data-hero><a href="{{ url('home') }}">Home</a><span>/</span><a href="{{ url('verify') }}">Trace</a><span>/</span>{{ batch.code }}</div>
+    <h1 data-hero>{{ batch.honey_type }}</h1>
+    <p class="lead" data-hero>Batch <b>{{ batch.code }}</b>, {{ batch.get_status_display() }}, harvested {{ batch.harvest_date.strftime('%d %b %Y') }}.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% if verification.valid %}
+      <div class="verify-banner ok reveal">
+        <div class="big"><i data-lucide="shield-check"></i></div>
+        <div><strong>Authentic &amp; untampered.</strong> All {{ verification.length }} blocks are correctly linked and hash-verified on HoneyChain.</div>
+      </div>
+    {% else %}
+      <div class="verify-banner bad reveal">
+        <div class="big"><i data-lucide="shield-alert"></i></div>
+        <div><strong>Verification failed.</strong> {{ verification.reason }}</div>
+      </div>
+    {% endif %}
+
+    <div class="trace-grid">
+      <div>
+        <div class="info-card reveal-l">
+          <h3>Origin &amp; batch details</h3>
+          <dl class="kv">
+            <dt>Beekeeper</dt><dd>{{ batch.hive.beekeeper.name }}</dd>
+            <dt>Apiary reg.</dt><dd>{{ batch.hive.beekeeper.apiary_reg_no }}</dd>
+            <dt>Origin</dt><dd>{{ batch.hive.beekeeper.location }}</dd>
+            <dt>Hive</dt><dd>{{ batch.hive.code }}</dd>
+            <dt>Floral source</dt><dd>{{ batch.hive.floral_source }}</dd>
+            <dt>Quantity</dt><dd>{{ batch.quantity_kg }} kg</dd>
+            <dt>Certified organic</dt><dd>{{ 'Yes' if batch.hive.beekeeper.certified_organic else 'No' }}</dd>
+          </dl>
+        </div>
+
+        <h3 class="tl-title">Journey timeline</h3>
+        <p class="muted tl-sub">Each step below is an immutable block on this batch's chain.</p>
+        <div class="timeline">
+          {% for b in blocks %}
+          <div class="tl-item reveal">
+            <div class="tl-dot"><i data-lucide="{{ icons.get(b.event_type, 'circle') }}"></i></div>
+            <div class="tl-card">
+              <h4>{{ b.event_label }}</h4>
+              <div class="tl-meta">
+                <span><i data-lucide="user"></i> {{ b.actor }}</span>
+                {% if b.location %}<span><i data-lucide="map-pin"></i> {{ b.location }}</span>{% endif %}
+                <span><i data-lucide="clock"></i> {{ b.timestamp.strftime('%d %b %Y, %H:%M') }}</span>
+              </div>
+              {% if b.note %}<p class="tl-note">{{ b.note }}</p>{% endif %}
+              {% if b.data %}
+              <div class="tl-data">
+                {% for k, v in b.data.items() %}<span class="tag">{{ k|replace('_',' ') }}: {{ v }}</span>{% endfor %}
+              </div>
+              {% endif %}
+              <div class="tl-hash"><i data-lucide="lock"></i> {{ b.hash }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <aside class="info-card qr-card reveal-r">
+        <h3>Scan to share</h3>
+        <div class="qr-frame qr-frame-light">
+          <span class="qr-corner c1"></span><span class="qr-corner c2"></span>
+          <span class="qr-corner c3"></span><span class="qr-corner c4"></span>
+          <div class="qr-holo" data-qr="{{ request.build_absolute_uri(url('trace', code=batch.code)) }}"></div>
+          <div class="qr-logo">
+            <svg viewBox="0 0 40 44" aria-hidden="true"><path d="M20 1 37 11.5v21L20 43 3 32.5v-21z" fill="#241806"/><circle cx="20" cy="22" r="6" fill="#f5a623"/></svg>
+          </div>
+        </div>
+        <p class="muted qr-note">This QR links to this verified page. Print it on the jar label.</p>
+        <span class="badge-status">{{ batch.get_status_display() }}</span>
+        <div class="qr-actions">
+          <a href="{{ url('batch_detail', code=batch.code) }}" class="btn btn-outline btn-block"><i data-lucide="boxes"></i> View raw chain</a>
+          <a href="{{ url('api_batch', code=batch.code) }}" class="btn btn-block" target="_blank" rel="noopener"><i data-lucide="braces"></i> Open JSON API</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+{% endblock %}

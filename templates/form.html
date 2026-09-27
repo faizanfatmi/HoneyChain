@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}HoneyChain | {{ title }}{% endblock %}
+{% block page %}form{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <div class="crumbs" data-hero><a href="{{ url('dashboard') }}">Dashboard</a><span>/</span>{{ title }}</div>
+    <h1 data-hero>{{ title }}</h1>
+    {% if batch %}<p class="lead" data-hero>Appending to chain <b>{{ batch.code }}</b>. The new block is mined and linked to the last.</p>{% endif %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form method="post" class="form-card reveal" novalidate>
+      {{ csrf_input }}
+      {% if form.non_field_errors() %}
+        <div class="verify-banner bad form-banner"><div class="big"><i data-lucide="shield-alert"></i></div><div>{{ form.non_field_errors()|join(' ') }}</div></div>
+      {% endif %}
+      {% for field in form %}
+        <div class="field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span class="req">*</span>{% endif %}</label>
+          {{ field }}
+          {% if field.help_text %}<div class="help">{{ field.help_text }}</div>{% endif %}
+          {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+      {% endfor %}
+      <div class="form-actions">
+        <button type="submit" class="btn btn-block"><i data-lucide="check"></i> Save</button>
+        <a href="{{ url('dashboard') }}" class="btn btn-outline">Cancel</a>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

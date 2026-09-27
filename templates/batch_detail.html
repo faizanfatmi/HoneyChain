@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}HoneyChain | {{ batch.code }} chain{% endblock %}
+{% block page %}explorer{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <div class="crumbs" data-hero><a href="{{ url('home') }}">Home</a><span>/</span><a href="{{ url('dashboard') }}">Dashboard</a><span>/</span>{{ batch.code }}</div>
+    <h1 data-hero>Chain explorer</h1>
+    <p class="lead" data-hero>Batch <b>{{ batch.code }}</b>, {{ blocks|length }} blocks, each mined with proof of work.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container container-narrow">
+    {% if verification.valid %}
+      <div class="verify-banner ok reveal"><div class="big"><i data-lucide="shield-check"></i></div><div><strong>Chain valid.</strong> {{ verification.reason }}</div></div>
+    {% else %}
+      <div class="verify-banner bad reveal"><div class="big"><i data-lucide="shield-alert"></i></div><div><strong>Chain invalid.</strong> {{ verification.reason }}</div></div>
+    {% endif %}
+
+    <div class="explorer-actions">
+      <a href="{{ url('trace', code=batch.code) }}" class="btn btn-outline btn-sm"><i data-lucide="eye"></i> Consumer view</a>
+      <a href="{{ url('add_event', code=batch.code) }}" class="btn btn-sm"><i data-lucide="plus"></i> Add event</a>
+    </div>
+
+    <div class="blocks">
+      {% for b in blocks %}
+      <div class="block reveal">
+        <div class="bhead">
+          <span class="bidx">Block #{{ b.index }}</span>
+          <span class="pill">{{ b.event_label }}</span>
+        </div>
+        <div class="tl-meta">
+          <span><i data-lucide="user"></i> {{ b.actor }}</span>
+          {% if b.location %}<span><i data-lucide="map-pin"></i> {{ b.location }}</span>{% endif %}
+          <span><i data-lucide="clock"></i> {{ b.timestamp.strftime('%d %b %Y, %H:%M') }}</span>
+          <span><i data-lucide="pickaxe"></i> nonce {{ b.nonce }}</span>
+        </div>
+        {% if b.note %}<p class="tl-note">{{ b.note }}</p>{% endif %}
+        {% if b.data %}<div class="tl-data">{% for k, v in b.data.items() %}<span class="tag">{{ k|replace('_',' ') }}: {{ v }}</span>{% endfor %}</div>{% endif %}
+        <div class="hashrow">
+          <span>prev</span><span class="h">{{ b.previous_hash }}</span>
+          <span>hash</span><span class="h self">{{ b.hash }}</span>
+        </div>
+      </div>
+      {% if not loop.last %}<div class="link-arrow reveal"><i data-lucide="chevron-down"></i></div>{% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

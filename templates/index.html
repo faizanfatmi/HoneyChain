@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block page %}home{% endblock %}
+
+{% block content %}
+{% set sample = recent[0].code if recent else 'HNY-2026-0001' %}
+{% set sample_blocks = recent[0].block_count if recent else 8 %}
+<section class="hero">
+  <div class="container">
+    <div class="hero-text">
+      <h1 data-hero>Every jar of honey carries its whole history.</h1>
+      <p class="lead" data-hero>
+        HoneyChain writes each step of a batch onto a hash-linked ledger. Scan the
+        code on the jar to read where the honey came from, who handled it, and what
+        the lab measured.
+      </p>
+      <div class="hero-cta" data-hero>
+        <a href="{{ url('verify') }}" class="btn btn-honey"><i data-lucide="scan-line"></i> Trace a jar</a>
+        <a href="#how" class="btn btn-outline">See how it works</a>
+      </div>
+      <div class="hero-trust" data-hero>
+        <span><i data-lucide="shield-check"></i> Tamper-evident record</span>
+        <span><i data-lucide="flask-conical"></i> Lab results pinned to the batch</span>
+        <span><i data-lucide="map-pin"></i> Single-origin, geo-tagged</span>
+      </div>
+    </div>
+
+    <div class="comb-panel" data-hero>
+      <svg class="comb-chain" viewBox="0 20 410 232" role="img"
+           aria-label="A chain of eight linked honeycomb cells, each a block in a batch's record, sealed and verified.">
+        <g class="comb-links">
+          <line class="comb-link" x1="74" y1="88" x2="111" y2="151"/>
+          <line class="comb-link" x1="111" y1="151" x2="148" y2="88"/>
+          <line class="comb-link" x1="148" y1="88" x2="185" y2="151"/>
+          <line class="comb-link" x1="185" y1="151" x2="222" y2="88"/>
+          <line class="comb-link" x1="222" y1="88" x2="259" y2="151"/>
+          <line class="comb-link" x1="259" y1="151" x2="296" y2="88"/>
+          <line class="comb-link" x1="296" y1="88" x2="333" y2="151"/>
+        </g>
+        <g class="comb-cells">
+          <g class="comb-cell"><polygon class="comb-cell-face" points="74,46 110.37,67 110.37,109 74,130 37.63,109 37.63,67"/><polygon class="comb-cell-fill" points="74,46 110.37,67 110.37,109 74,130 37.63,109 37.63,67"/><text class="comb-cell-idx" x="74" y="88">0</text></g>
+          <g class="comb-cell"><polygon class="comb-cell-face" points="111,109 147.37,130 147.37,172 111,193 74.63,172 74.63,130"/><polygon class="comb-cell-fill" points="111,109 147.37,130 147.37,172 111,193 74.63,172 74.63,130"/><text class="comb-cell-idx" x="111" y="151">1</text></g>
+          <g class="comb-cell"><polygon class="comb-cell-face" points="148,46 184.37,67 184.37,109 148,130 111.63,109 111.63,67"/><polygon class="comb-cell-fill" points="148,46 184.37,67 184.37,109 148,130 111.63,109 111.63,67"/><text class="comb-cell-idx" x="148" y="88">2</text></g>
+          <g class="comb-cell"><polygon class="comb-cell-face" points="185,109 221.37,130 221.37,172 185,193 148.63,172 148.63,130"/><polygon class="comb-cell-fill" points="185,109 221.37,130 221.37,172 185,193 148.63,172 148.63,130"/><text class="comb-cell-idx" x="185" y="151">3</text></g>
+          <g class="comb-cell"><polygon class="comb-cell-face" points="222,46 258.37,67 258.37,109 222,130 185.63,109 185.63,67"/><polygon class="comb-cell-fill" points="222,46 258.37,67 258.37,109 222,130 185.63,109 185.63,67"/><text class="comb-cell-idx" x="222" y="88">4</text></g>
+          <g class="comb-cell"><polygon class="comb-cell-face" points="259,109 295.37,130 295.37,172 259,193 222.63,172 222.63,130"/><polygon class="comb-cell-fill" points="259,109 295.37,130 295.37,172 259,193 222.63,172 222.63,130"/><text class="comb-cell-idx" x="259" y="151">5</text></g>
+          <g class="comb-cell"><polygon class="comb-cell-face" points="296,46 332.37,67 332.37,109 296,130 259.63,109 259.63,67"/><polygon class="comb-cell-fill" points="296,46 332.37,67 332.37,109 296,130 259.63,109 259.63,67"/><text class="comb-cell-idx" x="296" y="88">6</text></g>
+          <g class="comb-cell"><polygon class="comb-cell-face" points="333,109 369.37,130 369.37,172 333,193 296.63,172 296.63,130"/><polygon class="comb-cell-fill" points="333,109 369.37,130 369.37,172 333,193 296.63,172 296.63,130"/><text class="comb-cell-idx" x="333" y="151">7</text></g>
+        </g>
+        <g class="comb-seal" transform="translate(360 178)">
+          <polygon class="comb-seal-hex" points="0,-30 25.98,-15 25.98,15 0,30 -25.98,15 -25.98,-15"/>
+          <path class="comb-seal-check" d="M-11,1 L-3,10 L12,-9"/>
+        </g>
+      </svg>
+      <p class="comb-caption">Chain <b>{{ sample }}</b>, {{ sample_blocks }} blocks sealed and linked.</p>
+      <div class="comb-legend">
+        <div><span class="n">0</span> Chain created</div>
+        <div><span class="n">4</span> Processed</div>
+        <div><span class="n">1</span> Harvested</div>
+        <div><span class="n">5</span> Packaged</div>
+        <div><span class="n">2</span> Extracted</div>
+        <div><span class="n">6</span> Warehoused</div>
+        <div><span class="n">3</span> Lab test</div>
+        <div><span class="n">7</span> On the shelf</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLACEHOLDER-BODY -->
+<section class="section-tight">
+  <div class="container">
+    <div class="stats" data-stagger>
+      <div class="stat reveal"><div class="num"><span data-count="{{ stats.batches }}">0</span></div><div class="label">Batches on the ledger</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="{{ stats.events }}">0</span></div><div class="label">Blocks mined</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="{{ stats.beekeepers }}">0</span></div><div class="label">Registered beekeepers</div></div>
+      <div class="stat reveal"><div class="num"><span data-count="{{ '%.0f'|format(stats.kg) }}">0</span> kg</div><div class="label">Honey traced</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="problem">
+  <div class="container">
+    <div class="split">
+      <div class="panel problem reveal-l">
+        <h3>India leads the world in honey, and in honey fraud.</h3>
+        <ul class="checklist bad">
+          <li><span class="ico"><i data-lucide="x"></i></span><span>Sugar syrup slips past ordinary purity tests, so adulterated honey undercuts honest beekeepers.</span></li>
+          <li><span class="ico"><i data-lucide="x"></i></span><span>Shoppers cannot tell raw single-origin honey from a blended import.</span></li>
+          <li><span class="ico"><i data-lucide="x"></i></span><span>Paper records break the chain of custody between the hive, the processor, and the shelf.</span></li>
+          <li><span class="ico"><i data-lucide="x"></i></span><span>Small apiaries earn less because they cannot prove where their honey came from.</span></li>
+        </ul>
+      </div>
+      <div class="panel reveal-r">
+        <h3>One record per batch that anyone can check.</h3>
+        <ul class="checklist good">
+          <li><span class="ico"><i data-lucide="check"></i></span><span>Every step is hashed and linked to the one before it. Alter a past record and the chain breaks where it changed.</span></li>
+          <li><span class="ico"><i data-lucide="check"></i></span><span>Lab results for moisture, pollen, and C4 sugar stay pinned to the batch.</span></li>
+          <li><span class="ico"><i data-lucide="check"></i></span><span>A shopper scans the jar and reads the origin, the floral source, and the full journey.</span></li>
+          <li><span class="ico"><i data-lucide="check"></i></span><span>Beekeepers charge more once they can prove a pure, single-origin harvest.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="platform">
+  <div class="container">
+    <div class="reveal">
+      <h2>What a honey supply chain needs, in one system.</h2>
+      <p class="lead">The same record serves beekeepers, processors, retailers, and the person holding the jar.</p>
+    </div>
+    <div class="features" data-stagger>
+      <div class="feature reveal"><span class="hex-ico"><i data-lucide="shield-check"></i></span><div><h3>Tamper-evident ledger</h3><p>Each step is a SHA-256 block linked to the last. One click re-hashes the chain and shows whether anything changed.</p></div></div>
+      <div class="feature reveal"><span class="hex-ico"><i data-lucide="qr-code"></i></span><div><h3>QR on every jar</h3><p>The code opens the batch's full record in a browser. No app to install.</p></div></div>
+      <div class="feature reveal"><span class="hex-ico"><i data-lucide="hexagon"></i></span><div><h3>Hive register</h3><p>Record each hive with its floral source and location, then track harvests and yield per colony.</p></div></div>
+      <div class="feature reveal"><span class="hex-ico"><i data-lucide="flask-conical"></i></span><div><h3>Pinned lab results</h3><p>Moisture, pollen count, and adulteration tests are written into the block and cannot be edited afterwards.</p></div></div>
+      <div class="feature reveal"><span class="hex-ico"><i data-lucide="boxes"></i></span><div><h3>Chain explorer</h3><p>Read the raw chain: indices, nonces, and previous-hash links, the way a public block explorer shows them.</p></div></div>
+      <div class="feature reveal"><span class="hex-ico"><i data-lucide="webhook"></i></span><div><h3>JSON API</h3><p>Partners and scanners fetch a batch's verified history from one REST endpoint.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="container">
+    <div class="reveal">
+      <h2>From hive to shelf in four steps.</h2>
+    </div>
+    <div class="steps" data-stagger>
+      <div class="step reveal"><span class="step-n">01</span><span class="step-ico"><i data-lucide="flower-2"></i></span><h4>Harvest</h4><p>The beekeeper logs a harvest. A batch is created and its chain opens with a genesis block.</p></div>
+      <div class="step reveal"><span class="step-n">02</span><span class="step-ico"><i data-lucide="flask-conical"></i></span><h4>Verify</h4><p>Extraction, lab tests, and processing are mined into the chain as linked blocks.</p></div>
+      <div class="step reveal"><span class="step-n">03</span><span class="step-ico"><i data-lucide="package"></i></span><h4>Pack and ship</h4><p>Jars are bottled with a QR code. Warehouse and transit steps keep the record current.</p></div>
+      <div class="step reveal"><span class="step-n">04</span><span class="step-ico"><i data-lucide="scan-line"></i></span><h4>Scan</h4><p>The shopper scans the jar and reads the whole verified journey before buying.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container">
+    <div class="cta-band reveal">
+      <h2>Open a real chain and check it yourself.</h2>
+      <p class="lead">Trace a seeded batch from harvest to shelf, or explore the producer dashboard.</p>
+      <div class="hero-cta">
+        <a href="{{ url('verify') }}" class="btn btn-honey"><i data-lucide="scan-line"></i> Trace a jar</a>
+        <a href="{{ url('dashboard') }}" class="btn btn-dark"><i data-lucide="layout-dashboard"></i> Open dashboard</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
